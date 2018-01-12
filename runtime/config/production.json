@@ -16,7 +16,7 @@
     "type": "file",
     "file": {
       "timeout": 86400000,
-      "cachePath": "E:\\thinkJS\\projectAdmin\\runtime\\cache",
+      "cachePath": "C:\\Program Files\\projectAdmin\\runtime\\cache",
       "pathDepth": 1,
       "gcInterval": 86400000
     }
@@ -42,13 +42,13 @@
       "cookie": {
         "name": "thinkjs"
       },
-      "sessionPath": "E:\\thinkJS\\projectAdmin\\runtime\\session"
+      "sessionPath": "C:\\Program Files\\projectAdmin\\runtime\\session"
     }
   },
   "view": {
     "type": "nunjucks",
     "nunjucks": {
-      "viewPath": "E:\\thinkJS\\projectAdmin\\view",
+      "viewPath": "C:\\Program Files\\projectAdmin\\view",
       "sep": "_",
       "extname": ".html"
     }
@@ -60,14 +60,14 @@
       "backups": 10,
       "absolute": true,
       "maxLogSize": 51200,
-      "filename": "E:\\thinkJS\\projectAdmin\\logs\\app.log"
+      "filename": "C:\\Program Files\\projectAdmin\\logs\\app.log"
     },
     "dateFile": {
       "level": "ALL",
       "absolute": true,
       "pattern": "-yyyy-MM-dd",
       "alwaysIncludePattern": true,
-      "filename": "E:\\thinkJS\\projectAdmin\\logs\\app.log"
+      "filename": "C:\\Program Files\\projectAdmin\\logs\\app.log"
     }
   }
 }
