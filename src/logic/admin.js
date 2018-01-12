@@ -15,7 +15,6 @@ module.exports = class extends base {
     }
     //check if has admin and has authuration
     let oprator = this.post('admin')
-    this.ctx.app.env === 'development' && console.log('admin oprator : ' + oprator)
     if(!oprator){
       return this.fail(1004,'NO_ADMIN')
     }
@@ -45,7 +44,7 @@ module.exports = class extends base {
       return false
     }
     this.ctx.state.model = res
-    console.log(this.ctx.state)
+
   }
 
 };

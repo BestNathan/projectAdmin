@@ -31,9 +31,7 @@ module.exports = class extends think.Service {
   }
 
   actionParamsCheck(ctx) {
-
     let action = ctx.state.action
-    console.log(action + '  actionParamsCheck')
     let value = false
     switch (action) {
       case 'query':
