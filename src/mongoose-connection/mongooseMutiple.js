@@ -6,7 +6,7 @@ const control = require('./control.js')
 mongoose.Promise = Promise
 
 function MongooseConnector(collection) {
-    this.dbpath = 'mongodb://localhost:27017/' + collection
+    this.dbpath = 'mongodb://nathan:zhangdage@localhost:27017/' + collection + '?authSource=admin'
     this.connection = mongoose.createConnection(this.dbpath)
     this.connection.on('connected', onConnected.bind(this));
     this.connection.on('error', onError.bind(this));
