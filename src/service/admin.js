@@ -4,10 +4,11 @@ module.exports = class extends think.Service {
     this.AllAdmin = ['nathan']
     this.toutiaoAdmin = ['yang1990....']
     this.jiuzhouAdmin = ['yinyinp9']
-    this.actions = ['query', 'update', 'delete']
-    this.routerActions = ['toutiao','jiuzhou']
+    this.needQueryUsernameActions = ['query', 'update', 'delete']
+    this.noNeedQueryUsernameActions = ['users']
+    this.routerActions = ['toutiao', 'jiuzhou']
   }
-  routerCheck(ctx){
+  routerCheck(ctx) {
     return this.routerActions.indexOf(ctx.action) != -1
   }
 
@@ -23,11 +24,15 @@ module.exports = class extends think.Service {
 
   actionCheck(ctx) {
     let action = ctx.state.action
-    if (this.actions.indexOf(action) != -1) {
+    if (this.needQueryUsernameActions.indexOf(action) != -1 || this.noNeedQueryUsernameActions.indexOf(action) != -1) {
       return true
     } else {
       return ctx.fail(1007, 'ACTION_NOT_ALLOWED')
     }
+  }
+
+  actionNeedQueryUsername(action) {
+    return this.needQueryUsernameActions.indexOf(action) != -1
   }
 
   actionParamsCheck(ctx) {
@@ -41,6 +46,8 @@ module.exports = class extends think.Service {
       case 'update':
         value = this.usernameCheck(ctx) && this.timeCheck(ctx)
         break;
+      case 'users':
+       value = this.pageCheck(ctx) && this.sizeCheck(ctx)
       default:
     }
     return value
@@ -52,6 +59,14 @@ module.exports = class extends think.Service {
 
   timeCheck(ctx) {
     return this.paramCheck('time', ctx)
+  }
+
+  pageCheck(ctx) {
+    return this.paramCheck('page', ctx)
+  }
+
+  sizeCheck(ctx) {
+    return this.paramCheck('size', ctx)
   }
 
   paramCheck(param, ctx) {
@@ -123,15 +138,48 @@ module.exports = class extends think.Service {
     }
   }
 
+  async getUsers(ctx) {
+    let size = ctx.state.size
+    let page = ctx.state.page
+    let model = this.model('admin')
+    let action = ctx.action
+    try {
+      let result = await model.findAllByConditions(action + 'User', {
+        size,
+        page
+      },{
+        username: 1,
+        time: 1,
+        _id: 0
+      })
+      let obj = {}
+      if (typeof result === 'string') {
+        return ctx.fail(1100, result)
+      }
+      obj.users = result
+      result = await model.getCount(action + 'User')
+      if (typeof result === -1) {
+        return ctx.fail(1100, "CountError")
+      }
+      obj.totalCount = result
+      obj.pages = Math.ceil(result / size)
+      return obj
+    } catch (e) {
+      console.log('getUsersError',e)
+      return ctx.fail(1100, e.message)
+    }
+  }
+
   async adminControll(ctx) {
     let model = ctx.state.model
     let action = ctx.state.action
+    let obj = {}
+    let flag = false
+
     if (!model || !action) {
       return ctx.fail(1100, 'something went wrong with server')
     }
 
-    let obj = {}
-    let flag = false
     switch (action) {
       case 'query':
         obj.time = model.time
@@ -148,6 +196,11 @@ module.exports = class extends think.Service {
         if (flag) {
           return ctx.success('success', 'success');
         }
+        break;
+      case 'users':
+        // obj.users = model.users
+        // obj.totalCount = model.totalCount
+        return ctx.success(model, 'success');
         break;
       default:
         return ctx.fail(1100, 'something went wrong with server')
