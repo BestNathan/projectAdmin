@@ -1,10 +1,11 @@
 module.exports = class extends think.Logic {
   __before(){
-    if(this.isGet && this.ctx.action === 'index'){
-      this.display()
+    if(this.isMethod('OPTIONS')){
+      this.service('cors').setCorsHeaders(this)
+      this.ctx.body = ''
       return false
     }
-    
+    this.header("Access-Control-Allow-Origin", this.header("origin") || "*");
     if(!this.isPost){
       return this.fail(1001,'METHOD_NOT_ALLOWED')
     }

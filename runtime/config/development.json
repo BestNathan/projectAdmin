@@ -40,7 +40,7 @@
     "type": "file",
     "file": {
       "cookie": {
-        "name": "thinkjs"
+        "name": "admin"
       },
       "sessionPath": "E:\\thinkJS\\projectAdmin\\runtime\\session"
     }

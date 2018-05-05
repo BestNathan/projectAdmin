@@ -39,11 +39,20 @@ module.exports = class extends base {
       return false
     }
     //check username if exsit in database
-    let res = await service.usernameExsit(this.ctx)
-    if(!res){
-      return false
+    if(service.actionNeedQueryUsername(action)){
+      let res = await service.usernameExsit(this.ctx)
+      if(!res){
+        return false
+      }
+      this.ctx.state.model = res
     }
-    this.ctx.state.model = res
+    if (action == 'users') {
+      let res = await service.getUsers(this.ctx)
+      if(!res){
+        return false
+      }
+      this.ctx.state.model = res
+    }
 
   }
 

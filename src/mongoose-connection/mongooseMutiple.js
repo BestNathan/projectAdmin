@@ -39,6 +39,14 @@ MongooseConnector.prototype.update = function (condition, update) {
     return this.connected && this.schemaInited ? control.update(this.model, condition, update) : "unconnected  or schemaUninited"
 }
 
+MongooseConnector.prototype.findAllByConditions = function (condition, outputOpt) {
+    return this.connected && this.schemaInited ? control.findAllByConditions(this.model, condition, outputOpt) : "unconnected  or schemaUninited"
+}
+
+MongooseConnector.prototype.getCount = function () {
+    return this.connected && this.schemaInited ? control.getCount(this.model) : "unconnected  or schemaUninited"
+}
+
 function onConnected() {
     this.connected = !0
     console.log('Mongoose connection open to ' + this.dbpath);
